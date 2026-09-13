@@ -1,207 +1,529 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nifty Market Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111827;
-            color: white;
-        }
+<title>NIFTY Market Intelligence</title>
 
-        .header {
-            padding: 20px;
-            text-align: center;
-            background: #1f2937;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        .header h1 {
-            margin: 0;
-            font-size: 25px;
-        }
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0b1120;
+    color:white;
+}
 
-        .time {
-            margin-top: 8px;
-            color: #9ca3af;
-        }
+.header{
+    padding:18px;
+    text-align:center;
+    background:#111827;
+    border-bottom:1px solid #263244;
+}
 
-        .container {
-            padding: 15px;
-        }
+.header h1{
+    margin:0;
+    font-size:23px;
+}
 
-        .status {
-            background: #374151;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 15px;
-        }
+.time{
+    margin-top:7px;
+    color:#9ca3af;
+    font-size:13px;
+}
 
-        .status h2 {
-            margin: 5px;
-            font-size: 32px;
-        }
+.container{
+    padding:14px;
+    max-width:600px;
+    margin:auto;
+}
 
-        .wait {
-            color: #facc15;
-        }
+.status{
+    padding:25px 15px;
+    text-align:center;
+    border-radius:18px;
+    background:#172033;
+    border:1px solid #263244;
+    margin-bottom:14px;
+}
 
-        .card {
-            background: #1f2937;
-            padding: 18px;
-            border-radius: 15px;
-            margin-bottom: 12px;
-        }
+.status-title{
+    color:#9ca3af;
+    font-size:14px;
+}
 
-        .card h3 {
-            margin-top: 0;
-        }
+#bias{
+    margin:8px 0;
+    font-size:36px;
+    font-weight:bold;
+}
 
-        .row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #374151;
-        }
+.wait{
+    color:#facc15;
+}
 
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #9ca3af;
-            font-size: 13px;
-        }
-    </style>
+.bullish{
+    color:#22c55e;
+}
+
+.bearish{
+    color:#ef4444;
+}
+
+.confidence{
+    color:#d1d5db;
+}
+
+.card{
+    background:#111827;
+    padding:17px;
+    border-radius:16px;
+    margin-bottom:13px;
+    border:1px solid #263244;
+}
+
+.card h3{
+    margin:0 0 12px 0;
+    font-size:17px;
+}
+
+.row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 0;
+    border-bottom:1px solid #263244;
+}
+
+.row:last-child{
+    border-bottom:none;
+}
+
+.label{
+    color:#9ca3af;
+}
+
+.value{
+    font-weight:bold;
+}
+
+.green{
+    color:#22c55e;
+}
+
+.red{
+    color:#ef4444;
+}
+
+.yellow{
+    color:#facc15;
+}
+
+.signal-box{
+    text-align:center;
+    padding:15px;
+    border-radius:14px;
+    background:#172033;
+    margin-top:12px;
+}
+
+.signal-title{
+    font-size:13px;
+    color:#9ca3af;
+}
+
+#signal{
+    font-size:24px;
+    font-weight:bold;
+    margin-top:6px;
+}
+
+.footer{
+    text-align:center;
+    padding:20px;
+    color:#6b7280;
+    font-size:12px;
+}
+</style>
 </head>
 
 <body>
 
-    <div class="header">
-        <h1>📊 NIFTY MARKET DASHBOARD</h1>
-        <div class="time" id="time">Loading...</div>
-    </div>
+<div class="header">
+    <h1>📊 NIFTY MARKET DASHBOARD</h1>
+    <div class="time" id="time">Loading...</div>
+</div>
 
-    <div class="container">
+<div class="container">
 
-        <div class="status">
-            <div>Current Market Bias</div>
-            <h2 class="wait">WAIT 🟡</h2>
-            <div>Confidence: --%</div>
+    <!-- MARKET BIAS -->
+    <div class="status">
+
+        <div class="status-title">
+            CURRENT MARKET BIAS
         </div>
 
-        <div class="card">
-            <h3>📈 NIFTY</h3>
-
-            <div class="row">
-                <span>Price</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>Change</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>Volume</span>
-                <span>--</span>
-            </div>
+        <div id="bias" class="wait">
+            WAIT 🟡
         </div>
 
-        <div class="card">
-            <h3>🐋 Big Player Activity</h3>
-
-            <div class="row">
-                <span>FII</span>
-                <span>Waiting</span>
-            </div>
-
-            <div class="row">
-                <span>DII</span>
-                <span>Waiting</span>
-            </div>
-
-            <div class="row">
-                <span>Institutional Bias</span>
-                <span>--</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>⚡ Option Chain</h3>
-
-            <div class="row">
-                <span>Call OI</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>Put OI</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>Change in OI</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>PCR</span>
-                <span>--</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>🌍 Global Cues</h3>
-
-            <div class="row">
-                <span>Gift Nifty</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>India VIX</span>
-                <span>--</span>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>📍 Key Levels</h3>
-
-            <div class="row">
-                <span>Support</span>
-                <span>--</span>
-            </div>
-
-            <div class="row">
-                <span>Resistance</span>
-                <span>--</span>
-            </div>
+        <div class="confidence">
+            Confidence: <span id="confidence">--</span>%
         </div>
 
     </div>
 
-    <div class="footer">
-        Nifty Market Intelligence Dashboard
+
+    <!-- NIFTY -->
+    <div class="card">
+
+        <h3>📈 NIFTY</h3>
+
+        <div class="row">
+            <span class="label">Price</span>
+            <span class="value" id="price">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Change</span>
+            <span class="value" id="change">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Volume</span>
+            <span class="value" id="volume">--</span>
+        </div>
+
     </div>
 
-    <script>
-        function updateTime() {
-            const now = new Date();
 
-            document.getElementById("time").innerText =
-                now.toLocaleString("en-IN", {
-                    dateStyle: "medium",
-                    timeStyle: "medium"
-                });
+    <!-- OPTION DATA -->
+    <div class="card">
+
+        <h3>⚡ OPTION CHAIN</h3>
+
+        <div class="row">
+            <span class="label">Call OI</span>
+            <span class="value" id="callOI">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Put OI</span>
+            <span class="value" id="putOI">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Call Change OI</span>
+            <span class="value" id="callCOI">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Put Change OI</span>
+            <span class="value" id="putCOI">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">PCR</span>
+            <span class="value" id="pcr">--</span>
+        </div>
+
+    </div>
+
+
+    <!-- INSTITUTIONAL -->
+    <div class="card">
+
+        <h3>🐋 BIG PLAYER ACTIVITY</h3>
+
+        <div class="row">
+            <span class="label">FII</span>
+            <span class="value yellow" id="fii">
+                Waiting
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">DII</span>
+            <span class="value yellow" id="dii">
+                Waiting
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">Institutional Bias</span>
+            <span class="value" id="institutional">
+                --
+            </span>
+        </div>
+
+    </div>
+
+
+    <!-- GLOBAL -->
+    <div class="card">
+
+        <h3>🌍 GLOBAL CUES</h3>
+
+        <div class="row">
+            <span class="label">Gift Nifty</span>
+            <span class="value" id="gift">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">India VIX</span>
+            <span class="value" id="vix">--</span>
+        </div>
+
+    </div>
+
+
+    <!-- LEVELS -->
+    <div class="card">
+
+        <h3>📍 KEY LEVELS</h3>
+
+        <div class="row">
+            <span class="label">Support</span>
+            <span class="value green" id="support">--</span>
+        </div>
+
+        <div class="row">
+            <span class="label">Resistance</span>
+            <span class="value red" id="resistance">--</span>
+        </div>
+
+    </div>
+
+
+    <!-- SIGNAL -->
+    <div class="signal-box">
+
+        <div class="signal-title">
+            TRADING SIGNAL
+        </div>
+
+        <div id="signal" class="wait">
+            WAIT 🟡
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+    NIFTY Market Intelligence Dashboard
+    <br>
+    Live data connection will be added next
+</div>
+
+
+<script>
+
+/* =========================
+   CLOCK
+========================= */
+
+function updateTime(){
+
+    const now = new Date();
+
+    document.getElementById("time").innerText =
+        now.toLocaleString("en-IN",{
+            dateStyle:"medium",
+            timeStyle:"medium"
+        });
+}
+
+updateTime();
+
+setInterval(updateTime,1000);
+
+
+/* =========================
+   DASHBOARD STATE
+========================= */
+
+let marketState = {
+
+    price:null,
+    change:null,
+
+    callOI:null,
+    putOI:null,
+
+    callCOI:null,
+    putCOI:null,
+
+    volume:null
+
+};
+
+
+/* =========================
+   MARKET BIAS ENGINE
+========================= */
+
+function calculateBias(){
+
+    let bullishScore = 0;
+    let bearishScore = 0;
+
+    /*
+       This engine will use:
+
+       Price
+       Volume
+       Call OI
+       Put OI
+       Change in OI
+
+       Actual market data will be
+       connected later.
+    */
+
+    if(
+        marketState.callCOI !== null &&
+        marketState.putCOI !== null
+    ){
+
+        if(marketState.putCOI > marketState.callCOI){
+            bullishScore++;
         }
 
-        updateTime();
-        setInterval(updateTime, 1000);
-    </script>
+        if(marketState.callCOI > marketState.putCOI){
+            bearishScore++;
+        }
+
+    }
+
+
+    if(
+        marketState.change !== null
+    ){
+
+        if(marketState.change > 0){
+            bullishScore++;
+        }
+
+        if(marketState.change < 0){
+            bearishScore++;
+        }
+
+    }
+
+
+    let total =
+        bullishScore + bearishScore;
+
+
+    let bias = "WAIT";
+    let confidence = 0;
+
+
+    if(total > 0){
+
+        if(bullishScore > bearishScore){
+
+            bias = "BULLISH";
+            confidence =
+                Math.round(
+                    (bullishScore / total) * 100
+                );
+
+        }
+
+        else if(bearishScore > bullishScore){
+
+            bias = "BEARISH";
+            confidence =
+                Math.round(
+                    (bearishScore / total) * 100
+                );
+
+        }
+
+    }
+
+
+    updateBias(bias,confidence);
+}
+
+
+/* =========================
+   UPDATE UI
+========================= */
+
+function updateBias(bias,confidence){
+
+    const biasElement =
+        document.getElementById("bias");
+
+    const signalElement =
+        document.getElementById("signal");
+
+
+    biasElement.className = "";
+
+    signalElement.className = "";
+
+
+    if(bias === "BULLISH"){
+
+        biasElement.innerText =
+            "BULLISH 🟢";
+
+        signalElement.innerText =
+            "BUY BIAS 🟢";
+
+        biasElement.classList.add("bullish");
+        signalElement.classList.add("bullish");
+
+    }
+
+    else if(bias === "BEARISH"){
+
+        biasElement.innerText =
+            "BEARISH 🔴";
+
+        signalElement.innerText =
+            "SELL BIAS 🔴";
+
+        biasElement.classList.add("bearish");
+        signalElement.classList.add("bearish");
+
+    }
+
+    else{
+
+        biasElement.innerText =
+            "WAIT 🟡";
+
+        signalElement.innerText =
+            "WAIT 🟡";
+
+        biasElement.classList.add("wait");
+        signalElement.classList.add("wait");
+
+    }
+
+
+    document.getElementById("confidence")
+        .innerText = confidence;
+}
+
+
+/* =========================
+   INITIAL STATE
+========================= */
+
+calculateBias();
+
+</script>
 
 </body>
 </html>
