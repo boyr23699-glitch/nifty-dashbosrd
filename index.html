@@ -1,1 +1,207 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nifty Market Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: white;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            background: #1f2937;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .time {
+            margin-top: 8px;
+            color: #9ca3af;
+        }
+
+        .container {
+            padding: 15px;
+        }
+
+        .status {
+            background: #374151;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .status h2 {
+            margin: 5px;
+            font-size: 32px;
+        }
+
+        .wait {
+            color: #facc15;
+        }
+
+        .card {
+            background: #1f2937;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 12px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #374151;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>📊 NIFTY MARKET DASHBOARD</h1>
+        <div class="time" id="time">Loading...</div>
+    </div>
+
+    <div class="container">
+
+        <div class="status">
+            <div>Current Market Bias</div>
+            <h2 class="wait">WAIT 🟡</h2>
+            <div>Confidence: --%</div>
+        </div>
+
+        <div class="card">
+            <h3>📈 NIFTY</h3>
+
+            <div class="row">
+                <span>Price</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>Change</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>Volume</span>
+                <span>--</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🐋 Big Player Activity</h3>
+
+            <div class="row">
+                <span>FII</span>
+                <span>Waiting</span>
+            </div>
+
+            <div class="row">
+                <span>DII</span>
+                <span>Waiting</span>
+            </div>
+
+            <div class="row">
+                <span>Institutional Bias</span>
+                <span>--</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>⚡ Option Chain</h3>
+
+            <div class="row">
+                <span>Call OI</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>Put OI</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>Change in OI</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>PCR</span>
+                <span>--</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>🌍 Global Cues</h3>
+
+            <div class="row">
+                <span>Gift Nifty</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>India VIX</span>
+                <span>--</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📍 Key Levels</h3>
+
+            <div class="row">
+                <span>Support</span>
+                <span>--</span>
+            </div>
+
+            <div class="row">
+                <span>Resistance</span>
+                <span>--</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        Nifty Market Intelligence Dashboard
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+
+            document.getElementById("time").innerText =
+                now.toLocaleString("en-IN", {
+                    dateStyle: "medium",
+                    timeStyle: "medium"
+                });
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+
+</body>
+</html>
