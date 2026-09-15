@@ -9,13 +9,14 @@ CORS(app)
 session = requests.Session()
 
 session.headers.update({
-    "User-Agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/120 Safari/537.36",
+    "User-Agent": "Mozilla/5.0",
     "Accept": "application/json,text/plain,*/*",
     "Accept-Language": "en-US,en;q=0.9"
 })
 
 
 def get_yahoo(symbol):
+
     url = (
         "https://query1.finance.yahoo.com/v8/finance/chart/"
         + symbol
@@ -23,11 +24,29 @@ def get_yahoo(symbol):
     )
 
     try:
-        r = requests.get(url, headers=session.headers, timeout=10)
+
+        r = session.get(url, timeout=10)
+
+        print("Yahoo status:", r.status_code)
+        print("Yahoo content-type:", r.headers.get("content-type"))
+
+        if r.status_code != 200:
+            print("Yahoo response:", r.text[:300])
+            return {
+                "price": None,
+                "change": None
+            }
+
+        if "json" not in r.headers.get("content-type", "").lower():
+            print("Yahoo returned non-JSON:", r.text[:300])
+            return {
+                "price": None,
+                "change": None
+            }
+
         data = r.json()
 
         result = data["chart"]["result"][0]
-
         meta = result["meta"]
 
         price = meta.get("regularMarketPrice")
@@ -35,7 +54,7 @@ def get_yahoo(symbol):
 
         change = None
 
-        if price is not None and previous:
+        if price is not None and previous is not None:
             change = round(price - previous, 2)
 
         return {
@@ -44,7 +63,9 @@ def get_yahoo(symbol):
         }
 
     except Exception as e:
-        print("Yahoo error:", e)
+
+        print("Yahoo error:", repr(e))
+
         return {
             "price": None,
             "change": None
@@ -55,11 +76,12 @@ def get_nse_data():
 
     try:
 
-        # Open NSE first to obtain cookies
-        session.get(
+        r = session.get(
             "https://www.nseindia.com",
             timeout=10
         )
+
+        print("NSE homepage status:", r.status_code)
 
         time.sleep(1)
 
@@ -73,10 +95,34 @@ def get_nse_data():
             timeout=15
         )
 
+        print("NSE API status:", r.status_code)
+        print("NSE content-type:", r.headers.get("content-type"))
+
+        if r.status_code != 200:
+            print("NSE response:", r.text[:300])
+
+            return {
+                "callOI": None,
+                "putOI": None,
+                "callCOI": None,
+                "putCOI": None,
+                "pcr": None
+            }
+
+        if "json" not in r.headers.get("content-type", "").lower():
+            print("NSE returned non-JSON:", r.text[:300])
+
+            return {
+                "callOI": None,
+                "putOI": None,
+                "callCOI": None,
+                "putCOI": None,
+                "pcr": None
+            }
+
         data = r.json()
 
-        records = data.get("records", {})
-        rows = records.get("data", [])
+        rows = data.get("records", {}).get("data", [])
 
         total_call_oi = 0
         total_put_oi = 0
@@ -112,29 +158,34 @@ def get_nse_data():
         pcr = None
 
         if total_call_oi > 0:
+
             pcr = round(
                 total_put_oi / total_call_oi,
                 2
             )
 
         return {
+
             "callOI": total_call_oi,
             "putOI": total_put_oi,
             "callCOI": total_call_change,
             "putCOI": total_put_change,
             "pcr": pcr
+
         }
 
     except Exception as e:
 
-        print("NSE error:", e)
+        print("NSE error:", repr(e))
 
         return {
+
             "callOI": None,
             "putOI": None,
             "callCOI": None,
             "putCOI": None,
             "pcr": None
+
         }
 
 
@@ -142,8 +193,10 @@ def get_nse_data():
 def home():
 
     return jsonify({
+
         "status": "NIFTY API running",
         "message": "Market data service is online"
+
     })
 
 
@@ -173,7 +226,6 @@ def market():
 
         "fii": None,
         "dii": None,
-
         "gift": None,
 
         "vix": vix["price"],
@@ -182,6 +234,7 @@ def market():
         "resistance": None,
 
         "updated": int(time.time())
+
     })
 
 
