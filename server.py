@@ -17,7 +17,7 @@ session.headers.update({
 })
 
 def empty_options():
-return {
+    return {
 "callOI": None,
 "putOI": None,
 "callCOI": None,
